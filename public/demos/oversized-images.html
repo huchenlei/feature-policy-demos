@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Feature Policy: oversized-images example</title>
+  <title>Document Policy: oversized-images example</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans">
   <link rel="stylesheet" href="/styles/main.css">
   <link rel="stylesheet" href="/styles/header.css">
@@ -17,7 +17,7 @@
     <!-- filled dynamically -->
   </details>
 
-  <p>When intrinsic_size / container_size ratio exceed threshold given, the image
+  <p>When image_size / container_size ratio exceed threshold given, the image
     will be replace by a placeholder.</p>
 
   <p>Note: container_size is represented in physical pixel,
@@ -28,7 +28,7 @@
 
   <div id="height-demo" style="display: block; width: 50%; float:left">
     <ul>
-      <li>intrinsic_height = 300</li>
+      <li>image_height = 300</li>
       <li>container_height = <span class="container-size"></span></li>
       <li>ratio = <span class="ratio"></span></li>
     </ul>
@@ -37,7 +37,7 @@
 
   <div id="width-demo" style="display: block; width: 50%; float:left">
     <ul>
-      <li>intrinsic_width = 400</li>
+      <li>image_width = 400</li>
       <li>container_width = <span class="container-size"></span></li>
       <li>ratio = <span class="ratio"></span></li>
     </ul>
@@ -54,7 +54,7 @@
     function shrinkContainers() {
       let completion = 0;
 
-      for (const [demoId, targetAttr, intrinsicValue] of [
+      for (const [demoId, targetAttr, imageValue] of [
         ['height-demo', 'height', 300],
         ['width-demo', 'width', 400]
       ]) {
@@ -63,17 +63,17 @@
         const containerSizeSpan = demoDiv.querySelector('.container-size');
         const ratioSpan = demoDiv.querySelector('.ratio');
 
-        const oldValue = parseFloat(img.getAttribute(targetAttr));
-        const newValue = oldValue * step;
-        const ratio = intrinsicValue / (newValue * pixelRatio);
+        const oldContainerSize = parseFloat(img.getAttribute(targetAttr));
+        const newContainerSize = oldContainerSize * step;
+        const ratio = imageValue / (newContainerSize * pixelRatio);
 
-        if (intrinsicValue / (oldValue * pixelRatio) > currentThreshold) {
+        if (imageValue / (oldContainerSize * pixelRatio) > currentThreshold) {
           completion++;
           continue;
         }
 
-        img.setAttribute(targetAttr, newValue.toString());
-        containerSizeSpan.textContent = (newValue * pixelRatio).toPrecision(3);
+        img.setAttribute(targetAttr, newContainerSize.toString());
+        containerSizeSpan.textContent = (newContainerSize * pixelRatio).toPrecision(3);
         ratioSpan.textContent = ratio.toPrecision(3);
       }
 
